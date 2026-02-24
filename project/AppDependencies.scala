@@ -2,7 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapPlayVersion = "10.5.0"
+  private val bootstrapPlayVersion = "10.6.0"
   private val catsVersion          = "2.13.0"
   private val mongoPlay            = "2.12.0"
 
