@@ -42,7 +42,6 @@ import uk.gov.hmrc.http.UpstreamErrorResponse
 import uk.gov.hmrc.transitmovementspushnotifications.config.Constants
 import uk.gov.hmrc.transitmovementspushnotifications.generators.ModelGenerators
 import uk.gov.hmrc.transitmovementspushnotifications.models.*
-import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V2_1
 import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V3_0
 import uk.gov.hmrc.transitmovementspushnotifications.models.responses.BoxResponse
 import uk.gov.hmrc.transitmovementspushnotifications.utils.GuiceWiremockSuite
@@ -64,7 +63,7 @@ class PushNotificationConnectorSpec
   implicit val defaultPatience: PatienceConfig =
     PatienceConfig(timeout = Span(2, Seconds), interval = Span(5, Millis))
 
-  val version: APIVersionHeader = Gen.oneOf(V2_1, V3_0).sample.value
+  val version: APIVersionHeader = V3_0
 
   "PushNotificationConnector" - {
 
@@ -104,44 +103,6 @@ class PushNotificationConnectorSpec
               server.verify(
                 getRequestedFor(urlPathEqualTo("/box"))
                   .withQueryParam("boxName", equalTo(Constants.BoxNameV3_0))
-                  .withQueryParam("clientId", equalTo(clientId))
-              )
-          }
-        }
-
-      }
-
-      "should return a BoxResponse when the pushPullNotification API returns 200 and valid JSON with BoxNameV2_1 for apiVersion 2_1" in {
-        server.stubFor {
-          get(urlPathEqualTo("/box"))
-            .withQueryParam("boxName", equalTo(Constants.BoxNameV2_1))
-            .withQueryParam("clientId", equalTo(clientId))
-            .willReturn(
-              aResponse()
-                .withStatus(OK)
-                .withBody(s"""
-                {
-                  "boxId": "${boxId.value}",
-                  "boxName":"${Constants.BoxNameV2_1}",
-                  "boxCreator":{
-                      "clientId": "$clientId"
-                  }
-                }
-              """)
-            )
-        }
-
-        val app = applicationBuilder.build()
-
-        running(app) {
-          val connector = app.injector.instanceOf[PushPullNotificationConnector]
-          whenReady(connector.getBox(clientId, V2_1)) {
-            result =>
-              result mustEqual BoxResponse(boxId)
-
-              server.verify(
-                getRequestedFor(urlPathEqualTo("/box"))
-                  .withQueryParam("boxName", equalTo(Constants.BoxNameV2_1))
                   .withQueryParam("clientId", equalTo(clientId))
               )
           }

@@ -28,7 +28,7 @@ import play.api.test.Helpers.stubControllerComponents
 import play.api.test.FakeRequest
 import uk.gov.hmrc.transitmovementspushnotifications.base.TestActorSystem
 import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader
-import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V2_1
+import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V3_0
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -82,14 +82,14 @@ class ValidateAcceptRefinerSpec extends AnyFreeSpec with Matchers with ScalaFutu
 
     "should accept request with valid APIVersion header" in {
       val request = FakeRequest(POST, "/")
-        .withHeaders("APIVersion" -> "2.1")
+        .withHeaders("APIVersion" -> "3.0")
         .withBody(Json.obj())
 
       val resultF = refiner.refine(request)
 
       whenReady(resultF) {
         case Right(validatedRequest) =>
-          validatedRequest.versionHeader mustEqual V2_1
+          validatedRequest.versionHeader mustEqual V3_0
         case Left(_) =>
           fail("Expected refiner to accept request")
       }

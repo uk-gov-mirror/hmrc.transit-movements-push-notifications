@@ -37,7 +37,6 @@ import uk.gov.hmrc.transitmovementspushnotifications.config.AppConfig
 import uk.gov.hmrc.transitmovementspushnotifications.connectors.PushPullNotificationConnector
 import uk.gov.hmrc.transitmovementspushnotifications.generators.ModelGenerators
 import uk.gov.hmrc.transitmovementspushnotifications.models.*
-import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V2_1
 import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V3_0
 import uk.gov.hmrc.transitmovementspushnotifications.models.request.BoxAssociationRequest
 import uk.gov.hmrc.transitmovementspushnotifications.models.responses.BoxResponse
@@ -53,7 +52,7 @@ class PushNotificationServiceSpec extends SpecBase with ModelGenerators with Tes
   val mockPushPullNotificationConnector = mock[PushPullNotificationConnector]
   private val mockAppConfig             = mock[AppConfig]
 
-  val version: APIVersionHeader = Gen.oneOf(V2_1, V3_0).sample.value
+  val version: APIVersionHeader = V3_0
 
   implicit val ec: ExecutionContext = materializer.executionContext
   implicit val hc: HeaderCarrier    = HeaderCarrier()

@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.transitmovementspushnotifications.controllers.actions
 
-import org.apache.pekko.stream.Materializer
 import play.api.libs.json.Json
 import play.api.mvc.Results.Status
 import play.api.mvc.ActionBuilder
@@ -39,7 +38,7 @@ final case class ValidatedVersionRequest[T](
   request: Request[T]
 ) extends WrappedRequest[T](request)
 
-final class ValidateAcceptRefiner @Inject() (cc: ControllerComponents)(implicit val ec: ExecutionContext, mat: Materializer)
+final class ValidateAcceptRefiner @Inject() (cc: ControllerComponents)(implicit val ec: ExecutionContext)
     extends ActionRefiner[Request, ValidatedVersionRequest]
     with ActionBuilder[ValidatedVersionRequest, AnyContent] {
 
