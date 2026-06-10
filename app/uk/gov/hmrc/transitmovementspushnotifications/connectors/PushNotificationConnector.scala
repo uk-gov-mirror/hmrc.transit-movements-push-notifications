@@ -32,7 +32,6 @@ import uk.gov.hmrc.transitmovementspushnotifications.config.Constants
 import uk.gov.hmrc.transitmovementspushnotifications.models.*
 import uk.gov.hmrc.transitmovementspushnotifications.models.responses.BoxResponse
 import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
-import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V3_0
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -65,10 +64,7 @@ class PushPullNotificationConnectorImpl @Inject() (appConfig: AppConfig, httpCli
     hc: HeaderCarrier
   ): Future[BoxResponse] = {
 
-    val query = apiVersion match {
-      case V3_0 => QueryString.fromPairs(("boxName", Constants.BoxNameV3_0), ("clientId", clientId))
-      case _    => QueryString.fromPairs(("boxName", Constants.BoxNameV2_1), ("clientId", clientId))
-    }
+    val query = QueryString.fromPairs(("boxName", Constants.BoxNameV3_0), ("clientId", clientId))
 
     val url = appConfig.pushPullUrl.withPath(getBoxRoute).withQueryString(query)
 

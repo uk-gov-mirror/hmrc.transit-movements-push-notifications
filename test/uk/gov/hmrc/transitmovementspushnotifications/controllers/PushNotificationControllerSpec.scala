@@ -64,7 +64,6 @@ import uk.gov.hmrc.transitmovementspushnotifications.controllers.actions.Validat
 import uk.gov.hmrc.transitmovementspushnotifications.controllers.actions.ValidatedVersionRequest
 import uk.gov.hmrc.transitmovementspushnotifications.generators.ModelGenerators
 import uk.gov.hmrc.transitmovementspushnotifications.models.*
-import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V2_1
 import uk.gov.hmrc.transitmovementspushnotifications.models.APIVersionHeader.V3_0
 import uk.gov.hmrc.transitmovementspushnotifications.models.errors.ConvertError
 import uk.gov.hmrc.transitmovementspushnotifications.models.request.BoxAssociationRequest
@@ -91,7 +90,7 @@ class PushNotificationControllerSpec extends SpecBase with ModelGenerators with 
   val mockMovementBoxAssociationFactory: BoxAssociationFactory       = mock[BoxAssociationFactory]
   val mockInternalAuthActionProvider: InternalAuthActionProvider     = mock[InternalAuthActionProvider]
 
-  val versionHeader: APIVersionHeader = Gen.oneOf(V2_1, V3_0).sample.value
+  val versionHeader: APIVersionHeader = V3_0
 
   val movementId: MovementId = arbitrary[MovementId].sample.value
 
